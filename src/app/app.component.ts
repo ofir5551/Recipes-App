@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Recipes-App';
-  loadedPage: string = 'recipes';
-
-  onChangePage(page) {
-    this.loadedPage = page;
-  }
 }
