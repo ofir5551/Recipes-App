@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Ingredient } from '../shared/models/ingredient.model';
 
@@ -6,28 +7,45 @@ import { Ingredient } from '../shared/models/ingredient.model';
   providedIn: 'root',
 })
 export class ShoppingListService {
-  ingredientsChanged = new EventEmitter<Ingredient[]>();
+  ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
-  private ingredients: Ingredient[] = [
-    new Ingredient('Tomato', 3),
-    new Ingredient('Onion', 2),
-  ];
+  private ingredients: Ingredient[] = [];
 
   getIngredients() {
     return this.ingredients.slice();
   }
 
-  constructor() {}
-
-  addIngredients(newIngredient: Ingredient) {
-    this.ingredients.push(newIngredient);
-
-    this.ingredientsChanged.emit(this.ingredients.slice()); // Emits a new copy of the updated array
+  getIngredient(index: number) {
+    return this.ingredients[index];
   }
 
-  addIngredientsToShoppingList(recipeIngredients: Ingredient[]) {
+  constructor() {}
+
+  addIngredients(recipeIngredients: Ingredient[]) {
     this.ingredients.push(...recipeIngredients);
 
-    this.ingredientsChanged.emit(this.ingredients.slice()); // Emits a new copy of the updated array
+    this.ingredientsChanged.next(this.ingredients.slice()); // Emits a new copy of the updated array
+  }
+
+  addIngredient(newIngredient: Ingredient) {
+    this.ingredients.push(newIngredient);
+
+    this.ingredientsChanged.next(this.ingredients.slice()); // Emits a new copy of the updated array
+  }
+
+  updateIngredient(index: number, newIngredient: Ingredient) {
+    this.ingredients[index].name = newIngredient.name;
+    this.ingredients[index].amount = newIngredient.amount
+
+    this.ingredients.splice(index, 1, newIngredient,);
+
+    this.ingredientsChanged.next(this.ingredients.slice()); // Emits a new copy of the updated array
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+
+    this.ingredientsChanged.next(this.ingredients.slice()); // Emits a new copy of the updated array
   }
 }

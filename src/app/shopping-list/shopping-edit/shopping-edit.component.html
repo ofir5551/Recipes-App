@@ -1,42 +1,46 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title></title>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-xs-12">
-        <form>
-          <div class="row">
-            <div class="col-sm-5 form-group">
-              <label for="name">Name</label>
-              <input class="form-control" id="name" type="text" #nameInput />
-            </div>
-            <div class="col-xs-2 form-group">
-              <label for="amount">Amount</label>
-              <input
-                class="form-control"
-                id="amount"
-                type="number"
-                #amountInput
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <button
-                class="btn btn-success"
-                type="button"
-                (click)="onAddIngredient()"
-              >
-                Add
-              </button>
-              <button class="btn btn-danger" type="button">Delete</button>
-              <button class="btn btn-primary" type="button">Clear</button>
-            </div>
-          </div>
-        </form>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="editListForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-sm-5 form-group">
+          <label for="name">Item Name</label>
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            formControlName="itemName"
+          />
+        </div>
+
+        <div class="col-xs-2 form-group">
+          <label for="amount">Amount</label>
+          <input
+            class="form-control"
+            min="1"
+            id="amount"
+            type="number"
+            formControlName="amount"
+          />
+        </div>
       </div>
-    </div>
-  </body>
-</html>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            class="btn btn-success"
+            type="submit"
+            [disabled]="!editListForm.valid"
+          >
+            {{ editMode ? 'Update' : 'Add'}}
+          </button>
+
+          <button class="btn btn-danger" type="button" (click)="onDelete()">Delete</button>
+
+          <button class="btn btn-primary" type="button" (click)="clearForm()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
