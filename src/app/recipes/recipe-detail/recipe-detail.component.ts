@@ -13,6 +13,7 @@ import { RecipeService } from '../recipe.service';
 export class RecipeDetailComponent implements OnInit {
   selectedRecipe: Recipe;
   id: number;
+  showSuccessAlert: boolean = false;
 
   constructor(
     private shoppingListService: ShoppingListService,
@@ -30,6 +31,7 @@ export class RecipeDetailComponent implements OnInit {
 
   onAddToShoppingList() {
     this.shoppingListService.addIngredients(this.selectedRecipe.ingredients);
+    this.showSuccessAlert = true;
   }
 
   onEditRecipe() {
